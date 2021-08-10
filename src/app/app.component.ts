@@ -9,6 +9,6 @@ export class AppComponent {
   title = 'studyingAngular';
   loadedFeature:string='Recipes';
   onNavigate(feature:string){
-this.loadedFeature=feature;
+    this.loadedFeature=feature;
   }
 }

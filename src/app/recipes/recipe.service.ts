@@ -28,7 +28,7 @@ export class RecipeService{
         this.shopListService.addIngredients(ingredients);
       }
 
-      getRecipesById(id:number){
+      getRecipeById(id:number){
         return this.recipes.slice()[id];
       }
 }

@@ -27,12 +27,17 @@ export class RecipeService {
     return this.recipes.slice();
   }
 
-  addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    this.shopListService.addIngredients(ingredients);
-  }
-
   getRecipeById(id: number) {
     return this.recipes.slice()[id];
+  }
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(recipes.slice());
+  }
+
+  addIngredientsToShoppingList(ingredients: Ingredient[]) {
+    this.shopListService.addIngredients(ingredients);
   }
 
   addRecipe(recipe: Recipe) {
@@ -46,7 +51,7 @@ export class RecipeService {
   }
 
   deleteRecipe(index: number) {
-    this.recipes.splice(index,1);
+    this.recipes.splice(index, 1);
     this.recipesChanged.next(this.recipes.slice());
   }
 }

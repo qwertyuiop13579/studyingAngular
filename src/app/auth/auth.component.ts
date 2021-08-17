@@ -36,7 +36,7 @@ export class AuthComponent {
         }
 
         authObservable.subscribe(resData => {
-            console.log(resData);
+            //console.log(resData);
             this.isLoading = false;
             this.router.navigate(['/recipes']);
         }, errorMessage => {

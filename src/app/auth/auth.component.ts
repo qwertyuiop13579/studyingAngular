@@ -1,8 +1,9 @@
-import { Component, ComponentFactoryResolver } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
 import { AuthResponseData, AuthService } from './auth.service';
 
 @Component({
@@ -10,11 +11,13 @@ import { AuthResponseData, AuthService } from './auth.service';
     templateUrl: './auth.component.html',
     styleUrls: ['./auth.component.css']
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
 
     isLoginMode = true;
     isLoading = false;
     error: string = '';
+    @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
+    private closeAlertSub: Subscription;
 
     constructor(private authService: AuthService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) { }
 
@@ -55,6 +58,17 @@ export class AuthComponent {
 
     private showErrorAlert(mess: string) {
         const alertCompFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+        const hostViewContatinerRef = this.alertHost.viewContainerRef;
+        hostViewContatinerRef.clear();
+        const alertCompRef = hostViewContatinerRef.createComponent(alertCompFactory);
+        alertCompRef.instance.message = mess;
+        this.closeAlertSub = alertCompRef.instance.closeEvent.subscribe(() => {
+            this.closeAlertSub.unsubscribe();
+            hostViewContatinerRef.clear();
+        });
+    }
 
+    ngOnDestroy() {
+        if (this.closeAlertSub) this.closeAlertSub.unsubscribe();
     }
 }

@@ -2,12 +2,12 @@ import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } fro
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
 import * as fromApp from '../store/app.reduser';
-import { AuthResponseData, AuthService } from './auth.service';
+import { AuthService } from './auth.service';
 import * as AuthActions from './store/auth.actions';
 
 @Component({
@@ -28,7 +28,7 @@ export class AuthComponent implements OnDestroy, OnInit {
 
 
     ngOnInit() {
-        this.storeSub=this.store.select('auth').subscribe(authState => {
+        this.storeSub = this.store.select('auth').subscribe(authState => {
             this.isLoading = authState.isLoading;
             this.error = authState.authError;
             if (this.error) {

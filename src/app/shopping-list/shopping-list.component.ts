@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Ingredient } from '../shared/ingredient.model';
 import * as ShoppingListActions from './store/shopping-list.actions';
-import * as fromApp from '../store/app.reduser';
+import * as fromApp from '../store/app.reducer';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',

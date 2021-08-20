@@ -1,16 +1,18 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient} from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, tap, take, exhaustMap } from "rxjs/operators";
+import { Store } from "@ngrx/store";
+import { map, tap } from "rxjs/operators";
 
-import { AuthService } from "../auth/auth.service";
 import { Recipe } from "../recipes/recipe.model";
 import { RecipeService } from "../recipes/recipe.service";
+import * as fromApp from "../store/app.reducer";
+import * as fromRecipesActions from "../recipes/store/recipes.actions";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataStorageService {
-    constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService) { }
+    constructor(private http: HttpClient, private recipeService: RecipeService, private store:Store<fromApp.AppState>) { }
 
     storeRecipes() {
         let recipes = this.recipeService.getRecipes();
@@ -20,7 +22,6 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
-
         return this.http.get<Recipe[]>('https://studyingangular-default-rtdb.firebaseio.com/recipes.json').pipe(
             map(recipes => {
                 return recipes.map(recipe => {
@@ -28,7 +29,8 @@ export class DataStorageService {
                 });
             }),
             tap(recipes => {
-                this.recipeService.setRecipes(recipes);
+                this.store.dispatch(new fromRecipesActions.SetRecipes(recipes));
+                //this.recipeService.setRecipes(recipes);
             }));
     }
 }

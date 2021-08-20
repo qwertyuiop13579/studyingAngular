@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
-import * as fromApp from '../store/app.reduser';
+import * as fromApp from '../store/app.reducer';
 import { AuthService } from './auth.service';
 import * as AuthActions from './store/auth.actions';
 

@@ -6,10 +6,18 @@ import { of } from "rxjs";
 import { catchError, switchMap, map, tap } from "rxjs/operators";
 
 import { environment } from "src/environments/environment";
-import { AuthResponseData, AuthService } from "../auth.service";
+import { AuthService } from "../auth.service";
 import { User } from "../user.model";
 import * as fromAuthActions from './auth.actions'
 
+export interface AuthResponseData {
+    idToken: string;
+    email: string;
+    refreshToken: string;
+    expiresIn: string;
+    localId: string;
+    registered?: boolean;
+}
 
 const HandleAuthentication = (email: string, userId: string, token: string, expiresIn: number) => {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);

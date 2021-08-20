@@ -16,6 +16,10 @@ export function RecipesReducer(state: RecipesState = initialState, action: fromR
                 ...state,
                 recipes: [...action.payload]
             };
+        case fromRecipesActions.FETCH_RECIPES:
+            return {
+                ...state,
+            };
         default:
             return state;
     }

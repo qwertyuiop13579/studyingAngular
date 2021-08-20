@@ -23,7 +23,7 @@ const HandleAuthentication = (email: string, userId: string, token: string, expi
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
     localStorage.setItem('userData', JSON.stringify(user));
-    return new fromAuthActions.Authenticate({ email: email, userId: userId, token: token, expirationDate: expirationDate })
+    return new fromAuthActions.Authenticate({ email: email, userId: userId, token: token, expirationDate: expirationDate, redirect: true })
 }
 const handleError = (errorRes) => {
     let error = 'An error occurred!';
@@ -105,7 +105,7 @@ export class AuthEffects {
             if (loggedUser.token) {     //if valid token
                 const expiresIn: number = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
                 this.authService.setLogoutTimer(expiresIn);
-                return new fromAuthActions.Authenticate({ email: userData.email, userId: userData.id, token: userData._token, expirationDate: new Date(userData._tokenExpirationDate) });
+                return new fromAuthActions.Authenticate({ email: userData.email, userId: userData.id, token: userData._token, expirationDate: new Date(userData._tokenExpirationDate), redirect: false });
             }
             return { type: 'ZERO' };
         })
@@ -115,8 +115,10 @@ export class AuthEffects {
     @Effect({ dispatch: false })
     authRedirect = this.actions$.pipe(
         ofType(fromAuthActions.AUTHENTICATE),
-        tap(() => {
-            this.router.navigate(['/']);
+        tap((authAction: fromAuthActions.Authenticate) => {
+            if (authAction.payload.redirect) {
+                this.router.navigate(['/']);
+            }
         })
     )
 

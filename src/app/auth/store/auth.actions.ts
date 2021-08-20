@@ -22,7 +22,7 @@ export class SignupStart implements Action {
 
 export class Authenticate implements Action {
     readonly type = AUTHENTICATE;
-    constructor(public payload: { email: string, userId: string, token: string, expirationDate: Date }) { }
+    constructor(public payload: { email: string, userId: string, token: string, expirationDate: Date, redirect: boolean }) { }
 }
 
 export class AuthenticateFailed implements Action {

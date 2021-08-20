@@ -1,3 +1,4 @@
+import { Statement } from "@angular/compiler";
 import { Recipe } from "../recipe.model";
 import * as fromRecipesActions from "./recipes.actions";
 
@@ -16,9 +17,28 @@ export function RecipesReducer(state: RecipesState = initialState, action: fromR
                 ...state,
                 recipes: [...action.payload]
             };
-        case fromRecipesActions.FETCH_RECIPES:
+        case fromRecipesActions.ADD_RECIPE:
             return {
                 ...state,
+                recipes: [...state.recipes, action.payload]
+            };
+        case fromRecipesActions.UPDATE_RECIPE:
+            const updatedRecipe = {
+                ...state.recipes[action.payload.index],
+                ...action.payload.recipe
+            };
+            const updatesRecipes = [...state.recipes];
+            updatesRecipes[action.payload.index] = updatedRecipe;
+            return {
+                ...state,
+                recipes: updatesRecipes,
+            };
+        case fromRecipesActions.DELETE_RECIPE:
+            return {
+                ...state,
+                recipes: state.recipes.filter((recipe, index) => {
+                    return index !== action.payload;
+                })
             };
         default:
             return state;

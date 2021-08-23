@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import * as fromApp from './store/app.reducer';
 import { AuthEffects } from './auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
 import { RecipesEffects } from './recipes/store/recipes.effects';
+import { MaterialModule } from './material/material.module';
 
 
 @NgModule({
@@ -23,13 +25,15 @@ import { RecipesEffects } from './recipes/store/recipes.effects';
     HeaderComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({appId:'my-app'}),
+    BrowserModule.withServerTransition({ appId: 'my-app' }),
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.AppReducer),
     EffectsModule.forRoot([AuthEffects, RecipesEffects]),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     StoreRouterConnectingModule.forRoot(),
+    BrowserAnimationsModule,
+    MaterialModule,
     SharedModule,
     CoreModule,
   ],
